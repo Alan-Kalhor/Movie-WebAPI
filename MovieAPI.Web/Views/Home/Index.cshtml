@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Movie Store WebAPI";
+}
+<head>
+    <script src="~/scripts/angular.js"></script>
+    <script src="~/Scripts/Angular/app.js"></script>
+</head>
+<body ng-app="myMovieApp" class="ng-cloak">
+    <h2>Movie Store</h2>
+    <div ng-controller="movieController">
+            <input type="button" class="btn btn-primary"  value="Add New Movie" ng-click="AddMovieDiv()" />
+            <div ng-show="showForm">
+                <form ng-submit="addMovie()">
+                    <div class="form-row">
+                        <div class="form-group">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div>
+                            <input type="hidden" ng-model="movieModel.MovieId" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputTitle">Title</label>
+                            <input type="text" class="form-control" ng-model="movieModel.Title" id="inputTitle" placeholder="Title" required />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputClassification">Classification</label>
+                            <input type="text" class="form-control" ng-model="movieModel.Classification" id="inputClassification" placeholder="Classification" required />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputGenre">Genre</label>
+                            <input type="text" class="form-control" ng-model="movieModel.Genre" id="inputGenre" placeholder="Genre" required />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputReleaseDate">Release Date</label>
+                            <input type="text" class="form-control" ng-model="movieModel.ReleaseDate" id="inputReleaseDate" placeholder="Release Date (YYYY)" required />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputRating">Rating</label>
+                            <input type="text" class="form-control" ng-model="movieModel.Rating" id="inputRating" placeholder="Rating (1 to 5)" required />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputReleaseDate">Cast</label>
+                            <input type="text" class="form-control" ng-model="movieModel.Cast" id="inputCast" placeholder="Cast" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-success" ng-click="AddUpdateMovie()">Save</button>
+                            <button type="reset" class="btn btn-warning" ng-click="Cancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="text-danger" ng-show="showError">
+                <p>{{errmsg}}</p>
+            </div>
+            <div class="loading-img text-center" ng-show="showLoading">
+                <img src="~/Content/Loading.gif" />
+            </div>
+            <div ng-show="showGrid">
+                <form class="pull-right">
+                    <div class="form-row">
+                        <div class="form-group col-lg-0">
+                            <input type="text" class="form-control" ng-model="search" id="inputSearch" placeholder="Filter" required />
+                        </div>
+                    </div>
+                </form>
+                <div class="form-row">
+                    <div class="form-group">
+                        &nbsp;
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-sortable table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th ng-click='sortColumn("MovieId")'>Id</th>
+                                <th ng-click='sortColumn("Title")' ng-class='sortClass("Title")'>Title</th>
+                                <th ng-click='sortColumn("Classification")' ng-class='sortClass("Classification")'>Classification</th>
+                                <th ng-click='sortColumn("Genre")' ng-class='sortClass("Genre")'>Genre</th>
+                                <th ng-click='sortColumn("ReleaseDate")' ng-class='sortClass("ReleaseDate")'>ReleaseDate</th>
+                                <th ng-click='sortColumn("Rating")' ng-class='sortClass("Rating")'>Rating</th>
+                                <th>Cast</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="movie in movieList | filter : search">
+                                <td>{{movie.MovieId}}</td>
+                                <td>{{movie.Title}}</td>
+                                <td>{{movie.Classification}}</td>
+                                <td>{{movie.Genre}}</td>
+                                <td>{{movie.ReleaseDate}}</td>
+                                <td>{{movie.Rating}}</td>
+                                <td>{{movie.Cast.join(' ,')}}</td>
+                                <td><button type="button" class="btn btn-success btn-sm" ng-click="updateMovie(movie)">Update</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</body>
